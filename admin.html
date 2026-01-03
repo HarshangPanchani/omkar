@@ -2,93 +2,108 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Add Product - Omkar Ceramics</title>
+    <title>Admin - Omkar Ceramics</title>
     <style>
-        body { font-family: sans-serif; padding: 20px; background: #f4f4f4; }
-        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
-        button { background: #28a745; color: white; border: none; padding: 12px 20px; cursor: pointer; font-size: 16px; width: 100%; }
-        button:hover { background: #218838; }
-        .output-box { margin-top: 20px; background: #222; color: #0f0; padding: 15px; font-family: monospace; white-space: pre-wrap; }
-        .note { background: #fff3cd; padding: 10px; margin-bottom: 20px; border: 1px solid #ffeeba; }
+        body { font-family: sans-serif; padding: 20px; background: #f0f2f5; }
+        .container { max-width: 900px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .row { display: flex; gap: 30px; }
+        .col { flex: 1; }
+        label { display: block; margin-top: 15px; font-weight: bold; font-size: 0.9rem; color: #444; }
+        input, textarea, select { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        
+        /* Specific style for ID input to show it's important */
+        #code { background: #e8f0fe; font-weight: bold; border-color: #4a90e2; }
+        
+        button { margin-top: 20px; width: 100%; padding: 15px; background: #2c3e50; color: white; border: none; font-size: 1rem; cursor: pointer; font-weight: bold; }
+        button:hover { background: #1a252f; }
+        
+        .output { background: #282c34; color: #98c379; font-family: monospace; padding: 15px; height: 300px; width: 100%; box-sizing: border-box; }
+        .error { color: red; font-size: 0.8rem; display: none; margin-top: 5px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>Add New Product</h2>
-    <div class="note">
-        <strong>How to use:</strong><br>
-        1. Put your image file inside the <code>images/</code> folder first.<br>
-        2. Enter the details below. For Image, just type the filename (e.g., <code>tile01.jpg</code>).
+    <h2>Add Item</h2>
+    
+    <div class="row">
+        <div class="col">
+            <label>Item ID (Auto-calculated, or type Custom)</label>
+            <input type="text" id="code" onkeyup="checkDuplicate()">
+            <div id="duplicateMsg" class="error">⚠️ This ID is already in use!</div>
+
+            <label>Product Name</label>
+            <input type="text" id="name">
+
+            <label>Category</label>
+            <input type="text" id="cat" list="cats">
+            <datalist id="cats">
+                <option value="Floor Tiles">
+                <option value="Wall Tiles">
+                <option value="Sanitaryware">
+                <option value="Nameplates">
+            </datalist>
+
+            <label>Size / Dimensions</label>
+            <input type="text" id="size">
+
+            <label>Image Filename (e.g. tile1.jpg)</label>
+            <input type="text" id="img">
+
+            <label>Description</label>
+            <textarea id="desc" rows="3"></textarea>
+
+            <button onclick="generate()">Generate Code</button>
+        </div>
+
+        <div class="col">
+            <label>Copy this into products.js:</label>
+            <textarea id="result" class="output" onclick="this.select()"></textarea>
+        </div>
     </div>
-
-    <div class="form-group">
-        <label>Category (Type new or select)</label>
-        <input type="text" id="cat" list="catList" placeholder="e.g. Floor Tiles">
-        <datalist id="catList">
-            <option value="Floor Tiles">
-            <option value="Wall Tiles">
-            <option value="Sanitaryware">
-            <option value="Nameplates">
-            <option value="Bathroom Fittings">
-            <option value="Chemicals/Grout">
-        </datalist>
-    </div>
-
-    <div class="form-group">
-        <label>Product Name</label>
-        <input type="text" id="name" placeholder="e.g. Italian Marble Finish">
-    </div>
-
-    <div class="form-group">
-        <label>Unique Code (Leave empty for Auto-Generate)</label>
-        <input type="text" id="code" placeholder="e.g. OM-5002">
-    </div>
-
-    <div class="form-group">
-        <label>Size / Dimensions</label>
-        <input type="text" id="size" placeholder="e.g. 600mm x 1200mm">
-    </div>
-
-    <div class="form-group">
-        <label>Image Filename (Must be in 'images' folder)</label>
-        <input type="text" id="img" placeholder="e.g. myproduct.jpg">
-    </div>
-
-    <div class="form-group">
-        <label>Description</label>
-        <textarea id="desc" rows="3" placeholder="Description..."></textarea>
-    </div>
-
-    <button onclick="generate()">GENERATE CODE</button>
-
-    <h3>Copy this and paste into products.js:</h3>
-    <textarea id="result" class="output-box" rows="8"></textarea>
 </div>
 
+<script src="products.js"></script>
+
 <script>
-    function generate() {
-        const name = document.getElementById('name').value;
-        const cat = document.getElementById('cat').value;
-        let code = document.getElementById('code').value;
-        const size = document.getElementById('size').value;
-        const img = document.getElementById('img').value;
-        const desc = document.getElementById('desc').value;
+    // 1. Logic to find the next simple number
+    window.onload = function() {
+        let maxId = 0;
 
-        if(!code) {
-            code = "OM-" + Math.floor(Math.random() * 9000 + 1000);
+        if (typeof products !== 'undefined') {
+            products.forEach(p => {
+                // Check if ID is a pure number (no letters, no dashes)
+                // We use Regex to ensure it contains only digits
+                if (/^\d+$/.test(p.id)) {
+                    const num = parseInt(p.id, 10);
+                    if (num > maxId) {
+                        maxId = num;
+                    }
+                }
+            });
         }
+        
+        // Next ID is Max + 1
+        document.getElementById('code').value = maxId + 1;
+    };
 
+    // 2. Warning if ID exists
+    function checkDuplicate() {
+        const val = document.getElementById('code').value;
+        const exists = products.some(p => p.id === val);
+        document.getElementById('duplicateMsg').style.display = exists ? 'block' : 'none';
+        document.getElementById('code').style.borderColor = exists ? 'red' : '#4a90e2';
+    }
+
+    // 3. Generate JSON
+    function generate() {
         const obj = {
-            id: code,
-            name: name,
-            category: cat,
-            size: size,
-            description: desc,
-            image: "images/" + img
+            id: document.getElementById('code').value,
+            name: document.getElementById('name').value,
+            category: document.getElementById('cat').value,
+            size: document.getElementById('size').value,
+            description: document.getElementById('desc').value,
+            image: "images/" + document.getElementById('img').value
         };
 
         const json = `    ` + JSON.stringify(obj, null, 4) + `,`;

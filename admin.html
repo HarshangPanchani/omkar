@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Product - Omkar Ceramics</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; background: #f4f4f4; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        button { background: #28a745; color: white; border: none; padding: 12px 20px; cursor: pointer; font-size: 16px; width: 100%; }
+        button:hover { background: #218838; }
+        .output-box { margin-top: 20px; background: #222; color: #0f0; padding: 15px; font-family: monospace; white-space: pre-wrap; }
+        .note { background: #fff3cd; padding: 10px; margin-bottom: 20px; border: 1px solid #ffeeba; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Add New Product</h2>
+    <div class="note">
+        <strong>How to use:</strong><br>
+        1. Put your image file inside the <code>images/</code> folder first.<br>
+        2. Enter the details below. For Image, just type the filename (e.g., <code>tile01.jpg</code>).
+    </div>
+
+    <div class="form-group">
+        <label>Category (Type new or select)</label>
+        <input type="text" id="cat" list="catList" placeholder="e.g. Floor Tiles">
+        <datalist id="catList">
+            <option value="Floor Tiles">
+            <option value="Wall Tiles">
+            <option value="Sanitaryware">
+            <option value="Nameplates">
+            <option value="Bathroom Fittings">
+            <option value="Chemicals/Grout">
+        </datalist>
+    </div>
+
+    <div class="form-group">
+        <label>Product Name</label>
+        <input type="text" id="name" placeholder="e.g. Italian Marble Finish">
+    </div>
+
+    <div class="form-group">
+        <label>Unique Code (Leave empty for Auto-Generate)</label>
+        <input type="text" id="code" placeholder="e.g. OM-5002">
+    </div>
+
+    <div class="form-group">
+        <label>Size / Dimensions</label>
+        <input type="text" id="size" placeholder="e.g. 600mm x 1200mm">
+    </div>
+
+    <div class="form-group">
+        <label>Image Filename (Must be in 'images' folder)</label>
+        <input type="text" id="img" placeholder="e.g. myproduct.jpg">
+    </div>
+
+    <div class="form-group">
+        <label>Description</label>
+        <textarea id="desc" rows="3" placeholder="Description..."></textarea>
+    </div>
+
+    <button onclick="generate()">GENERATE CODE</button>
+
+    <h3>Copy this and paste into products.js:</h3>
+    <textarea id="result" class="output-box" rows="8"></textarea>
+</div>
+
+<script>
+    function generate() {
+        const name = document.getElementById('name').value;
+        const cat = document.getElementById('cat').value;
+        let code = document.getElementById('code').value;
+        const size = document.getElementById('size').value;
+        const img = document.getElementById('img').value;
+        const desc = document.getElementById('desc').value;
+
+        if(!code) {
+            code = "OM-" + Math.floor(Math.random() * 9000 + 1000);
+        }
+
+        const obj = {
+            id: code,
+            name: name,
+            category: cat,
+            size: size,
+            description: desc,
+            image: "images/" + img
+        };
+
+        const json = `    ` + JSON.stringify(obj, null, 4) + `,`;
+        document.getElementById('result').value = json;
+    }
+</script>
+
+</body>
+</html>

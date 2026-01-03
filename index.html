@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omkar Ceramics</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a1a1a;
+            --secondary: #666;
+            --accent: #c5a059; /* Gold/Bronze for premium feel */
+            --bg-light: #f8f9fa;
+        }
+        * { box-sizing: border-box; }
+        body { font-family: 'Outfit', sans-serif; margin: 0; background: #fff; color: var(--primary); }
+        
+        /* Navbar */
+        .navbar {
+            padding: 15px 20px;
+            background: rgba(255,255,255,0.95);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+        .logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 600; letter-spacing: 1px; }
+        .contact-btn {
+            background: var(--primary);
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        /* Search & Filter Bar */
+        .controls {
+            padding: 20px;
+            background: var(--bg-light);
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .search-box {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            width: 100%;
+            max-width: 400px;
+            font-size: 1rem;
+        }
+        .category-select {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background: white;
+            font-size: 1rem;
+        }
+
+        /* Product Grid */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); /* Mobile friendly columns */
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        @media(min-width: 768px) {
+            .grid-container { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
+        }
+
+        /* Product Card */
+        .card {
+            background: #fff;
+            border: 1px solid #f0f0f0;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .card-img-container {
+            width: 100%;
+            height: 200px; /* Fixed height for uniformity */
+            background: #f4f4f4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.3s;
+        }
+        .card-body { padding: 15px; }
+        .badge { 
+            font-size: 0.75rem; background: var(--bg-light); 
+            padding: 4px 8px; border-radius: 4px; color: var(--secondary); display: inline-block; margin-bottom: 5px;
+        }
+        .card-title { font-weight: 600; margin: 5px 0; font-size: 1.1rem; }
+        .card-dim { font-size: 0.85rem; color: var(--secondary); }
+        .inquire-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background: white;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 8px;
+            margin-top: 10px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+        .inquire-btn:hover { background: var(--primary); color: white; }
+
+        /* Footer & Map */
+        footer { background: #111; color: #fff; padding: 40px 20px; text-align: center; margin-top: 50px; }
+        .map-container iframe { width: 100%; height: 300px; border: 0; filter: grayscale(100%); }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">OMKAR CERAMICS</div>
+        <a href="https://wa.me/919824462218" class="contact-btn">✆ 98244 62218</a>
+    </nav>
+
+    <div class="controls">
+        <input type="text" id="searchInput" class="search-box" placeholder="Search code (e.g. OM-1002)...">
+        <select id="categoryFilter" class="category-select">
+            <option value="All">All Categories</option>
+            </select>
+    </div>
+
+    <div style="text-align: center; margin-top: 10px; font-size: 0.9rem; color: #777;">
+        Showing <span id="count">0</span> products
+    </div>
+
+    <div class="grid-container" id="productGrid">
+        </div>
+
+    <footer>
+        <h2 style="font-family: 'Playfair Display', serif;">Visit Our Store</h2>
+        <p>Premium Ceramics & Custom Nameplates</p>
+        <div class="map-container" style="max-width: 800px; margin: 20px auto;">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3671.3412675264035!2d72.6416163!3d23.0479469!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e870064f56f93%3A0x965082878a19f671!2sOmkar%20Ceramics!5e0!3m2!1sen!2sin!4v1767423210700!5m2!1sen!2sin" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+        <p>© 2026 Omkar Ceramics</p>
+    </footer>
+
+    <script src="products.js"></script>
+    <script>
+        const grid = document.getElementById('productGrid');
+        const searchInput = document.getElementById('searchInput');
+        const categoryFilter = document.getElementById('categoryFilter');
+        const countLabel = document.getElementById('count');
+
+        // 1. Populate Categories Dynamically
+        function loadCategories() {
+            const categories = new Set(products.map(p => p.category));
+            categories.forEach(cat => {
+                const option = document.createElement('option');
+                option.value = cat;
+                option.innerText = cat;
+                categoryFilter.appendChild(option);
+            });
+        }
+
+        // 2. Render Products
+        function renderProducts(items) {
+            grid.innerHTML = "";
+            countLabel.innerText = items.length;
+
+            if(items.length === 0) {
+                grid.innerHTML = "<p style='text-align:center; width:100%; grid-column: 1/-1;'>No products found.</p>";
+                return;
+            }
+
+            items.forEach(product => {
+                const div = document.createElement('div');
+                div.className = 'card';
+                
+                // WhatsApp Message Generator
+                const waText = `Hello, I am interested in ${product.name} (Code: ${product.id})`;
+                const waLink = `https://wa.me/919824462218?text=${encodeURIComponent(waText)}`;
+
+                div.innerHTML = `
+                    <div class="card-img-container">
+                        <img src="${product.image}" alt="${product.name}" class="card-img" onerror="this.src='https://via.placeholder.com/300?text=No+Image'">
+                    </div>
+                    <div class="card-body">
+                        <span class="badge">${product.id}</span>
+                        <h3 class="card-title">${product.name}</h3>
+                        <p class="card-dim">${product.size}</p>
+                        <p style="font-size:0.9rem; color:#555; margin-bottom:15px;">${product.description}</p>
+                        <a href="${waLink}" class="inquire-btn" target="_blank">Inquire on WhatsApp</a>
+                    </div>
+                `;
+                grid.appendChild(div);
+            });
+        }
+
+        // 3. Search & Filter Logic
+        function filterData() {
+            const query = searchInput.value.toLowerCase();
+            const selectedCat = categoryFilter.value;
+
+            const filtered = products.filter(item => {
+                const matchesSearch = item.name.toLowerCase().includes(query) || 
+                                      item.id.toLowerCase().includes(query);
+                const matchesCat = selectedCat === "All" || item.category === selectedCat;
+                return matchesSearch && matchesCat;
+            });
+
+            renderProducts(filtered);
+        }
+
+        // Event Listeners
+        searchInput.addEventListener('input', filterData);
+        categoryFilter.addEventListener('change', filterData);
+
+        // Init
+        loadCategories();
+        renderProducts(products);
+
+    </script>
+</body>
+</html>

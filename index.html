@@ -45,7 +45,11 @@
 </div>
 
 <div class="grid" id="grid"></div>
-
+<div id="pagination" style="display: flex; justify-content: center; align-items: center; gap: 20px; padding: 20px;">
+    <button id="prevBtn" onclick="changePage(-1)" style="padding: 10px 20px; cursor: pointer; border: 1px solid #222; background: white;">Previous</button>
+    <span id="pageInfo" style="font-weight: 600;">Page 1</span>
+    <button id="nextBtn" onclick="changePage(1)" style="padding: 10px 20px; cursor: pointer; border: 1px solid #222; background: white;">Next</button>
+</div>
 <footer>
     <h3>Omkar Ceramics</h3>
     <p>Premium Tiles & Custom Nameplates</p>
@@ -58,13 +62,19 @@
     const grid = document.getElementById('grid');
     const search = document.getElementById('search');
     const catSelect = document.getElementById('catFilter');
-    let products = []; // Start with empty array
+    const pageInfo = document.getElementById('pageInfo');
 
-    // 1. Fetch the data from the JSON file
+    let products = [];      // Raw data from JSON
+    let filteredItems = []; // Items after search/category filter
+    let currentPage = 1;
+    const itemsPerPage = 10;
+
+    // 1. Fetch Data
     fetch('products.json')
         .then(response => response.json())
         .then(data => {
-            products = data; 
+            products = data;
+            filteredItems = [...products]; // Initially, all items are "filtered"
             
             // Populate Categories
             const categories = [...new Set(products.map(p => p.category))];
@@ -74,26 +84,31 @@
                 catSelect.appendChild(opt);
             });
 
-            // Initial Render once data is ready
-            render(products); 
-        })
-        .catch(err => {
-            grid.innerHTML = `<p style="text-align:center;">Error loading products. Make sure products.json exists.</p>`;
-            console.error(err);
+            updateUI(); 
         });
 
-    // 2. Render Function
-    /*function render(items) {
-        grid.innerHTML = items.length ? '' : '<p style="width:100%;text-align:center;">No items found.</p>';
+    // 2. The Core Render Function
+    function render() {
+        grid.innerHTML = '';
         
-        items.forEach(p => {
+        // Calculate which items to show for the current page
+        const start = (currentPage - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        const paginatedItems = filteredItems.slice(start, end);
+
+        if (paginatedItems.length === 0) {
+            grid.innerHTML = '<p style="width:100%;text-align:center;">No items found.</p>';
+            return;
+        }
+
+        paginatedItems.forEach(p => {
             const msg = `Hi, I am interested in ${p.name} (ID: ${p.id})`;
             const wa = `https://wa.me/919824462218?text=${encodeURIComponent(msg)}`;
             
             grid.innerHTML += `
                 <div class="card">
-                    <div class="img-wrap">
-                        <img src="${p.image}" onerror="this.src='https://via.placeholder.com/300?text=No+Image'">
+                    <div class="img-wrap" onclick="openZoom('${p.image}')" style="cursor: zoom-in;">
+                        <img src="${p.image}" loading="lazy" onerror="this.src='https://via.placeholder.com/300?text=No+Image'">
                     </div>
                     <div class="info">
                         <span class="id-badge">ID: ${p.id}</span>
@@ -102,59 +117,63 @@
                         <div style="font-size:0.9rem; color:#555;">${p.description}</div>
                         <a href="${wa}" class="btn">Inquire</a>
                     </div>
-                </div>
-            `;
+                </div>`;
         });
-    }*/
-    function render(items) {
-    grid.innerHTML = items.length ? '' : '<p style="width:100%;text-align:center;">No items found.</p>';
-    
-    items.forEach(p => {
-        const msg = `Hi, I am interested in ${p.name} (ID: ${p.id})`;
-        const wa = `https://wa.me/919824462218?text=${encodeURIComponent(msg)}`;
-        
-        grid.innerHTML += `
-            <div class="card">
-                <div class="img-wrap" onclick="openZoom('${p.image}')" style="cursor: zoom-in;">
-                    <img src="${p.image}" 
-                         loading="lazy" 
-                         alt="${p.name}"
-                         onerror="this.src='https://via.placeholder.com/300?text=No+Image'">
-                </div>
-                <div class="info">
-                    <span class="id-badge">ID: ${p.id}</span>
-                    <h3>${p.name}</h3>
-                    <div class="meta">${p.size}</div>
-                    <div style="font-size:0.9rem; color:#555;">${p.description}</div>
-                    <a href="${wa}" class="btn">Inquire</a>
-                </div>
-            </div>
-        `;
-    });
-}
+    }
 
-    // 3. Filter Logic
+    // 3. Update UI (Render + Button state)
+    function updateUI() {
+        const totalPages = Math.ceil(filteredItems.length / itemsPerPage) || 1;
+        
+        // Safety check: if current page is higher than total pages after filtering
+        if (currentPage > totalPages) currentPage = totalPages;
+        if (currentPage < 1) currentPage = 1;
+
+        render();
+
+        // Update Buttons & Text
+        pageInfo.innerText = `Page ${currentPage} of ${totalPages}`;
+        document.getElementById('prevBtn').disabled = (currentPage === 1);
+        document.getElementById('nextBtn').disabled = (currentPage === totalPages);
+        
+        // Visual feedback for disabled buttons
+        document.getElementById('prevBtn').style.opacity = (currentPage === 1) ? "0.5" : "1";
+        document.getElementById('nextBtn').style.opacity = (currentPage === totalPages) ? "0.5" : "1";
+    }
+
+    // 4. Pagination Actions
+    function changePage(direction) {
+        currentPage += direction;
+        updateUI();
+        window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll back to top
+    }
+
+    // 5. Filter Logic
     function filter() {
         const q = search.value.toLowerCase().trim();
         const cat = catSelect.value;
         
-        const filtered = products.filter(p => {
+        filteredItems = products.filter(p => {
             const matchSearch = p.id.toString().toLowerCase().includes(q) ||
                                 p.name.toLowerCase().includes(q);
             const matchCat = cat === "All" || p.category === cat;
             return matchSearch && matchCat;
         });
-        render(filtered);
+
+        currentPage = 1; // Reset to page 1 on every new search
+        updateUI();
     }
 
     search.addEventListener('input', filter);
     catSelect.addEventListener('change', filter);
+
+    // Zoom Function (from previous step)
     function openZoom(imgSrc) {
-    const modal = document.getElementById('imageModal');
-    const modalImg = document.getElementById('modalImg');
-    modal.style.display = "flex";
-    modalImg.src = imgSrc;
-}
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImg');
+        modal.style.display = "flex";
+        modalImg.src = imgSrc;
+    }
 </script>
 <div id="imageModal" style="display:none; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.9); align-items:center; justify-content:center; cursor:zoom-out;" onclick="this.style.display='none'">
     <img id="modalImg" style="max-width:90%; max-height:90%; border:3px solid white; border-radius:5px; box-shadow:0 0 20px rgba(255,255,255,0.2);">

@@ -8,24 +8,35 @@
     <style>
         :root { --primary: #222; --gold: #c6a87c; --bg: #fff; --gray: #f9f9f9; }
         body { margin: 0; font-family: 'Jost', sans-serif; background: var(--bg); color: var(--primary); }
+        
+        /* Navbar */
         header { padding: 15px 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: rgba(255,255,255,0.95); z-index: 100; }
         .brand { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 600; }
         .whatsapp-link { background: #25D366; color: white; text-decoration: none; padding: 8px 15px; border-radius: 20px; font-size: 0.9rem; font-weight: 500; }
+
+        /* Controls */
         .controls { padding: 20px; background: var(--gray); display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
         input, select { padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem; outline: none; }
         #search { flex: 1; min-width: 200px; max-width: 400px; }
+
+        /* Grid */
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; padding: 20px; max-width: 1200px; margin: 0 auto; }
         @media(min-width: 768px) { .grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 30px; } }
+
+        /* Card */
         .card { border: 1px solid #eee; border-radius: 6px; overflow: hidden; background: white; transition: 0.2s; }
         .card:hover { box-shadow: 0 10px 20px rgba(0,0,0,0.05); transform: translateY(-3px); }
         .img-wrap { height: 200px; background: #eee; display: flex; align-items: center; justify-content: center; overflow: hidden; }
         .img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+        
         .info { padding: 15px; }
         .id-badge { background: var(--primary); color: white; padding: 2px 8px; font-size: 0.75rem; border-radius: 3px; display: inline-block; margin-bottom: 8px; }
         h3 { margin: 0 0 5px 0; font-size: 1.1rem; font-weight: 600; }
         .meta { color: #777; font-size: 0.85rem; margin-bottom: 10px; }
+        
         .btn { display: block; text-align: center; border: 1px solid var(--primary); color: var(--primary); text-decoration: none; padding: 8px; border-radius: 4px; font-size: 0.9rem; transition: 0.2s; margin-top: 10px; }
         .btn:hover { background: var(--primary); color: white; }
+
         footer { text-align: center; padding: 40px 20px; background: #111; color: white; margin-top: 40px; }
         iframe { width: 100%; max-width: 600px; height: 300px; border: 0; filter: grayscale(100%); margin-top: 20px; }
     </style>
@@ -38,7 +49,7 @@
 </header>
 
 <div class="controls">
-    <input type="text" id="search" placeholder="Search ID or Name...">
+    <input type="text" id="search" placeholder="Search ID (e.g. 5, tile-123) or Name...">
     <select id="catFilter">
         <option value="All">All Categories</option>
     </select>
@@ -51,36 +62,26 @@
     <p>Premium Tiles & Custom Nameplates</p>
     <p>Address: Opposite Bajrang Ashram, Near Petrol Pump, N.H.No. 8, Thakkarbapanagr, Ahmedabad-382350</p>
     <p>Contact: +91 98244 62218</p>
-    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3671.444747754531!2d72.6366578!3d23.0441221!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e86903f07a77b%3A0x6b4f74676527582!2sOmkar%20Ceramics!5e0!3m2!1sen!2sin!4v1690000000000!5m2!1sen!2sin" allowfullscreen="" loading="lazy"></iframe>
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3671.3412675264035!2d72.6416163!3d23.0479469!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e870064f56f93%3A0x965082878a19f671!2sOmkar%20Ceramics!5e0!3m2!1sen!2sin!4v1767423210700!5m2!1sen!2sin" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 </footer>
 
+
 <script>
-    const grid = document.getElementById('grid');
-    const search = document.getElementById('search');
-    const catSelect = document.getElementById('catFilter');
-    let products = []; // Start with empty array
-
-    // 1. Fetch the data from the JSON file
     fetch('products.json')
-        .then(response => response.json())
-        .then(data => {
-            products = data; 
-            
-            // Populate Categories
-            const categories = [...new Set(products.map(p => p.category))];
-            categories.forEach(c => {
-                const opt = document.createElement('option');
-                opt.value = c; opt.innerText = c;
-                catSelect.appendChild(opt);
-            });
-
-            // Initial Render once data is ready
-            render(products); 
-        })
-        .catch(err => {
-            grid.innerHTML = `<p style="text-align:center;">Error loading products. Make sure products.json exists.</p>`;
-            console.error(err);
+    .then(response => response.json())
+    .then(data => {
+        window.products = data; // Set global variable
+        
+        // Populate Categories
+        const categories = [...new Set(products.map(p => p.category))];
+        categories.forEach(c => {
+            const opt = document.createElement('option');
+            opt.value = c; opt.innerText = c;
+            catSelect.appendChild(opt);
         });
+
+        render(products); // Initial Render
+    });
 
     // 2. Render Function
     function render(items) {
@@ -113,7 +114,9 @@
         const cat = catSelect.value;
         
         const filtered = products.filter(p => {
-            const matchSearch = p.id.toString().toLowerCase().includes(q) ||
+            // Search matches ID perfectly OR includes text in Name
+            const matchSearch = p.id.toString().toLowerCase() === q || 
+                                p.id.toString().toLowerCase().includes(q) ||
                                 p.name.toLowerCase().includes(q);
             const matchCat = cat === "All" || p.category === cat;
             return matchSearch && matchCat;
@@ -123,6 +126,9 @@
 
     search.addEventListener('input', filter);
     catSelect.addEventListener('change', filter);
+    
+    // Initial Load
+    render(products);
 </script>
 
 </body>

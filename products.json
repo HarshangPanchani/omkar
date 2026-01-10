@@ -1,0 +1,42 @@
+[
+    {
+        "id": "1",
+        "name": "indian piece",
+        "category": "Floor Tiles",
+        "size": "height:120",
+        "description": "dwd",
+        "image": "images\/1_japmala_app_icon.png"
+    },
+    {
+        "id": "2",
+        "name": "dawd",
+        "category": "Floor Tiles",
+        "size": "dwad",
+        "description": "dwad",
+        "image": "images\/2_Lenox Logo.png"
+    },
+    {
+        "id": "3",
+        "name": "dawawf",
+        "category": "Floor Tiles",
+        "size": "dwad",
+        "description": "efad",
+        "image": "images\/3_ETL-1.png"
+    },
+    {
+        "id": "4",
+        "name": "wdadawdvfaecfcv",
+        "category": "Sanitaryware",
+        "size": "dwda",
+        "description": "wdad",
+        "image": "images\/4_2 (1).png"
+    },
+    {
+        "id": "5",
+        "name": "dwadwd",
+        "category": "Nameplates",
+        "size": "dawd",
+        "description": "wdad",
+        "image": "images\/5_image (1).png"
+    }
+]

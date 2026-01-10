@@ -83,7 +83,7 @@
         });
 
     // 2. Render Function
-    function render(items) {
+    /*function render(items) {
         grid.innerHTML = items.length ? '' : '<p style="width:100%;text-align:center;">No items found.</p>';
         
         items.forEach(p => {
@@ -105,7 +105,33 @@
                 </div>
             `;
         });
-    }
+    }*/
+    function render(items) {
+    grid.innerHTML = items.length ? '' : '<p style="width:100%;text-align:center;">No items found.</p>';
+    
+    items.forEach(p => {
+        const msg = `Hi, I am interested in ${p.name} (ID: ${p.id})`;
+        const wa = `https://wa.me/919824462218?text=${encodeURIComponent(msg)}`;
+        
+        grid.innerHTML += `
+            <div class="card">
+                <div class="img-wrap" onclick="openZoom('${p.image}')" style="cursor: zoom-in;">
+                    <img src="${p.image}" 
+                         loading="lazy" 
+                         alt="${p.name}"
+                         onerror="this.src='https://via.placeholder.com/300?text=No+Image'">
+                </div>
+                <div class="info">
+                    <span class="id-badge">ID: ${p.id}</span>
+                    <h3>${p.name}</h3>
+                    <div class="meta">${p.size}</div>
+                    <div style="font-size:0.9rem; color:#555;">${p.description}</div>
+                    <a href="${wa}" class="btn">Inquire</a>
+                </div>
+            </div>
+        `;
+    });
+}
 
     // 3. Filter Logic
     function filter() {
@@ -123,7 +149,17 @@
 
     search.addEventListener('input', filter);
     catSelect.addEventListener('change', filter);
+    function openZoom(imgSrc) {
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImg');
+    modal.style.display = "flex";
+    modalImg.src = imgSrc;
+}
 </script>
+<div id="imageModal" style="display:none; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.9); align-items:center; justify-content:center; cursor:zoom-out;" onclick="this.style.display='none'">
+    <img id="modalImg" style="max-width:90%; max-height:90%; border:3px solid white; border-radius:5px; box-shadow:0 0 20px rgba(255,255,255,0.2);">
+    <span style="position:absolute; top:20px; right:30px; color:white; font-size:40px; font-weight:bold; cursor:pointer;">&times;</span>
+</div>
 
 </body>
 </html>

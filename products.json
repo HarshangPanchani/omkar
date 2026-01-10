@@ -1,42 +1,162 @@
 [
     {
         "id": "1",
-        "name": "indian piece",
+        "name": "Glossy",
         "category": "Floor Tiles",
-        "size": "height:120",
-        "description": "dwd",
-        "image": "images\/1_japmala_app_icon.png"
+        "size": "2 x 2",
+        "description": "",
+        "image": "images\/1_20260110_160353.jpg"
     },
     {
         "id": "2",
-        "name": "dawd",
+        "name": "Glossy",
         "category": "Floor Tiles",
-        "size": "dwad",
-        "description": "dwad",
-        "image": "images\/2_Lenox Logo.png"
+        "size": "2 x 2",
+        "description": "",
+        "image": "images\/2_20260110_160345.jpg"
     },
     {
         "id": "3",
-        "name": "dawawf",
+        "name": "Glossy",
         "category": "Floor Tiles",
-        "size": "dwad",
-        "description": "efad",
-        "image": "images\/3_ETL-1.png"
+        "size": "2 x 2",
+        "description": "",
+        "image": "images\/3_20260110_160336.jpg"
     },
     {
         "id": "4",
-        "name": "wdadawdvfaecfcv",
-        "category": "Sanitaryware",
-        "size": "dwda",
-        "description": "wdad",
-        "image": "images\/4_2 (1).png"
+        "name": "Glossy",
+        "category": "Floor Tiles",
+        "size": "2 x 2",
+        "description": "",
+        "image": "images\/4_20260110_160329.jpg"
     },
     {
         "id": "5",
-        "name": "dwadwd",
-        "category": "Nameplates",
-        "size": "dawd",
-        "description": "wdad",
-        "image": "images\/5_image (1).png"
+        "name": "Glossy",
+        "category": "Floor Tiles",
+        "size": "2 x 2",
+        "description": "",
+        "image": "images\/5_20260110_160315.jpg"
+    },
+    {
+        "id": "6",
+        "name": "Glossy",
+        "category": "Floor Tiles",
+        "size": "2 x 2",
+        "description": "",
+        "image": "images\/6_20260110_160227.jpg"
+    },
+    {
+        "id": "7",
+        "name": "Glossy",
+        "category": "Floor Tiles",
+        "size": "2 x 2",
+        "description": "",
+        "image": "images\/7_20260110_160201.jpg"
+    },
+    {
+        "id": "8",
+        "name": "Glossy",
+        "category": "Floor Tiles",
+        "size": "2 x 2",
+        "description": "",
+        "image": "images\/8_20260110_160137.jpg"
+    },
+    {
+        "id": "9",
+        "name": "Glossy",
+        "category": "Floor Tiles",
+        "size": "2 x 2",
+        "description": "",
+        "image": "images\/9_20260110_160118.jpg"
+    },
+    {
+        "id": "10",
+        "name": "Glossy",
+        "category": "Floor Tiles",
+        "size": "2 x 2",
+        "description": "",
+        "image": "images\/10_20260110_160102.jpg"
+    },
+    {
+        "id": "11",
+        "name": "Glossy",
+        "category": "Floor Tiles",
+        "size": "2 x 2",
+        "description": "",
+        "image": "images\/11_20260110_160055.jpg"
+    },
+    {
+        "id": "12",
+        "name": "Glossy",
+        "category": "Floor Tiles",
+        "size": "2 x 2",
+        "description": "",
+        "image": "images\/12_20260110_160018.jpg"
+    },
+    {
+        "id": "13",
+        "name": "Glossy",
+        "category": "Floor Tiles",
+        "size": "2 x 2",
+        "description": "",
+        "image": "images\/13_20260110_155935.jpg"
+    },
+    {
+        "id": "14",
+        "name": "Glossy",
+        "category": "Floor Tiles",
+        "size": "2 x 2",
+        "description": "",
+        "image": "images\/14_20260110_155918.jpg"
+    },
+    {
+        "id": "15",
+        "name": "Glossy",
+        "category": "Floor Tiles",
+        "size": "2 x 2",
+        "description": "",
+        "image": "images\/15_20260110_155911.jpg"
+    },
+    {
+        "id": "16",
+        "name": "Glossy",
+        "category": "Floor Tiles",
+        "size": "2 x 2",
+        "description": "",
+        "image": "images\/16_20260110_155843.jpg"
+    },
+    {
+        "id": "17",
+        "name": "Glossy",
+        "category": "Floor Tiles",
+        "size": "2 x 2",
+        "description": "",
+        "image": "images\/17_20260110_155833.jpg"
+    },
+    {
+        "id": "18",
+        "name": "Glossy",
+        "category": "Floor Tiles",
+        "size": "2 x 2",
+        "description": "",
+        "image": "images\/18_20260110_155816.jpg"
+    },
+    {
+        "id": "19",
+        "name": "Glossy",
+        "category": "Floor Tiles",
+        "size": "2 x 2",
+        "description": "",
+        "image": "images\/19_20260110_155805.jpg"
+    },
+    {
+        "id": "20",
+        "name": "Glossy",
+        "category": "Floor Tiles",
+        "size": "2 x 2",
+        "description": "",
+        "image": "images\/20_20260110_155750.jpg"
     }
 ]
